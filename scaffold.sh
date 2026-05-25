@@ -47,8 +47,8 @@ DISPLAY_NAME="${1:-$PLUGIN_NAME}"
 DESCRIPTION="${1:-Local Cursor plugin: $DISPLAY_NAME}"
 [[ $# -gt 0 ]] && shift
 
-AUTHOR_NAME="${SCaffold_AUTHOR_NAME:-}"
-AUTHOR_EMAIL="${SCaffold_AUTHOR_EMAIL:-}"
+AUTHOR_NAME="${SCAFFOLD_AUTHOR_NAME:-}"
+AUTHOR_EMAIL="${SCAFFOLD_AUTHOR_EMAIL:-}"
 OUTPUT_DIR=""
 USE_SKILLS=1
 USE_RULES=1
@@ -170,10 +170,10 @@ fi
 
 # README blocks
 COMPONENTS_LIST=""
-$USE_SKILLS && COMPONENTS_LIST="${COMPONENTS_LIST}\n- Skills (\`skills/\`)"
-$USE_RULES && COMPONENTS_LIST="${COMPONENTS_LIST}\n- Rules (\`rules/\`)"
-$USE_HOOKS && COMPONENTS_LIST="${COMPONENTS_LIST}\n- Hooks (\`hooks/\`)"
-$USE_MCP && COMPONENTS_LIST="${COMPONENTS_LIST}\n- MCP server (\`mcp/\`)"
+[[ "$USE_SKILLS" -eq 1 ]] && COMPONENTS_LIST="${COMPONENTS_LIST}\n- Skills (\`skills/\`)"
+[[ "$USE_RULES" -eq 1 ]] && COMPONENTS_LIST="${COMPONENTS_LIST}\n- Rules (\`rules/\`)"
+[[ "$USE_HOOKS" -eq 1 ]] && COMPONENTS_LIST="${COMPONENTS_LIST}\n- Hooks (\`hooks/\`)"
+[[ "$USE_MCP" -eq 1 ]] && COMPONENTS_LIST="${COMPONENTS_LIST}\n- MCP server (\`mcp/\`)"
 
 SETUP_BLOCK="./scripts/setup.sh    # MCP venv + .mcp.json"
 if [[ "$USE_MCP" -eq 0 ]]; then
@@ -190,6 +190,7 @@ path.write_text(text, encoding="utf-8")
 PY
 
 chmod +x "$OUTPUT_DIR/scripts/"*.sh 2>/dev/null || true
+chmod +x "$OUTPUT_DIR/scripts/"*.py 2>/dev/null || true
 chmod +x "$OUTPUT_DIR/hooks/"* 2>/dev/null || true
 chmod +x "$OUTPUT_DIR/mcp/"*.sh 2>/dev/null || true
 

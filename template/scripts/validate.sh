@@ -73,6 +73,16 @@ for script in setup.sh install-to-cursor.sh validate.sh; do
   fi
 done
 
+while IFS= read -r -d '' f; do
+  if grep -q '{{PLUGIN_' "$f" 2>/dev/null; then
+    fail "Unsubstituted template placeholders in ${f#"$ROOT"/}"
+  fi
+done < <(find "$ROOT" -type f \
+  ! -path '*/scripts/validate.sh' \
+  ! -path '*/.git/*' \
+  ! -path '*/mcp/.venv/*' \
+  -print0 2>/dev/null)
+
 if [[ "$ERR" -ne 0 ]]; then
   echo ""
   echo "Validation failed." >&2
