@@ -1,0 +1,17 @@
+# Plugin component flags — used by scaffold.sh
+# Set to true/false; scaffold removes disabled sections from generated plugins.
+
+components:
+  skills: {{COMPONENT_SKILLS}}
+  rules: {{COMPONENT_RULES}}
+  hooks: {{COMPONENT_HOOKS}}
+  mcp: {{COMPONENT_MCP}}
+
+install:
+  # Directory name under ~/.cursor/plugins/local/
+  local_name: "{{PLUGIN_NAME}}"
+
+mcp:
+  # Key in .mcp.json mcpServers and FastMCP server name
+  server_key: "{{PLUGIN_NAME}}"
+  python_min: "3.11"

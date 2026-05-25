@@ -1,0 +1,19 @@
+{
+  "name": "{{PLUGIN_NAME}}",
+  "displayName": "{{PLUGIN_DISPLAY_NAME}}",
+  "version": "0.1.0",
+  "description": "{{PLUGIN_DESCRIPTION}}",
+  "author": {
+    "name": "{{PLUGIN_AUTHOR_NAME}}",
+    "email": "{{PLUGIN_AUTHOR_EMAIL}}"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cursor-plugin",
+    "{{PLUGIN_NAME}}"
+  ],
+  "skills": "./skills/",
+  "rules": "./rules/",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
+}
