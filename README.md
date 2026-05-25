@@ -83,6 +83,13 @@ Details: [docs/plugin-types.md](docs/plugin-types.md).
 3. **Settings → Tools & MCP**: MCP server (if enabled)
 4. **Settings → Hooks**: hook entries (if enabled)
 
+## CI
+
+GitHub Actions in `.github/workflows/`:
+
+- `ci.yml` — shellcheck + scaffold matrix (`full`, `minimal`) + MCP smoke test
+- `actionlint.yml` — validates workflow syntax and common mistakes
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

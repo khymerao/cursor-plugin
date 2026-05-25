@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  shellcheck:
+    name: Shellcheck scripts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Run shellcheck
+        run: |
+          set -euo pipefail
+          shopt -s globstar nullglob
+          files=(scaffold.sh template/**/*.sh)
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No shell scripts found"
+            exit 0
+          fi
+          shellcheck "${files[@]}"
+
+  scaffold:
+    name: Scaffold and validate (${{ matrix.profile }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [full, minimal]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Scaffold plugin
+        run: |
+          set -euo pipefail
+          case "${{ matrix.profile }}" in
+            full)
+              ./scaffold.sh ci-full "CI Full" "CI full profile" --output-dir output/ci-full
+              ;;
+            minimal)
+              ./scaffold.sh ci-min "CI Minimal" "CI minimal profile" \
+                --no-mcp --no-hooks --output-dir output/ci-min
+              ;;
+          esac
+
+      - name: Validate scaffold output
+        run: |
+          set -euo pipefail
+          case "${{ matrix.profile }}" in
+            full)
+              cd output/ci-full
+              ;;
+            minimal)
+              cd output/ci-min
+              ;;
+          esac
+          ./scripts/validate.sh
+
+      - name: Setup MCP and smoke test (full only)
+        if: matrix.profile == 'full'
+        run: |
+          set -euo pipefail
+          cd output/ci-full
+          ./scripts/setup.sh
+          ./mcp/.venv/bin/python ./scripts/smoke-test-mcp.py
