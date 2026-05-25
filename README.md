@@ -2,8 +2,6 @@
 
 Scaffold and tooling for **local Cursor plugins** — skills, rules, hooks, and MCP servers installed to `~/.cursor/plugins/local/`.
 
-Built from lessons learned shipping [dormouse-cursor-plugin](https://github.com/ChuprinaDaria/dormouse) (Ukrainian text optimizer).
-
 ## Quick start
 
 ```bash

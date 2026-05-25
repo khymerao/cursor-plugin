@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# shellcheck source=lib/common.sh
+# shellcheck source=template/scripts/lib/common.sh
 source "$ROOT/scripts/lib/common.sh"
 
 ERR=0
@@ -47,9 +47,11 @@ for dir in skills rules; do
 done
 
 if [[ -f "$ROOT/hooks/hooks.json" ]]; then
-  python3 -m json.tool "$ROOT/hooks/hooks.json" >/dev/null 2>&1 \
-    && ok "Valid hooks/hooks.json" \
-    || fail "Invalid JSON in hooks/hooks.json"
+  if python3 -m json.tool "$ROOT/hooks/hooks.json" >/dev/null 2>&1; then
+    ok "Valid hooks/hooks.json"
+  else
+    fail "Invalid JSON in hooks/hooks.json"
+  fi
 fi
 
 if has_mcp_component "$ROOT"; then
@@ -58,9 +60,11 @@ if has_mcp_component "$ROOT"; then
     fail "Missing mcp/requirements.txt"
   fi
   if [[ -f "$ROOT/.mcp.json" ]]; then
-    python3 -m json.tool "$ROOT/.mcp.json" >/dev/null 2>&1 \
-      && ok "Valid .mcp.json" \
-      || fail "Invalid .mcp.json"
+    if python3 -m json.tool "$ROOT/.mcp.json" >/dev/null 2>&1; then
+      ok "Valid .mcp.json"
+    else
+      fail "Invalid .mcp.json"
+    fi
   else
     warn ".mcp.json not generated yet — run scripts/setup.sh"
   fi

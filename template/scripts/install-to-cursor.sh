@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# shellcheck source=lib/common.sh
+# shellcheck source=template/scripts/lib/common.sh
 source "$ROOT/scripts/lib/common.sh"
 
 NAME="$(plugin_name "$ROOT")"
